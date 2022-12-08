@@ -366,6 +366,7 @@ module.exports = {
   },
   // web
   getWebsAll(req, res, next) {
+    var tag = req.query.tag;
     pool.getConnection((err, connection) => {
       connection.query(sqlMap.web.queryAll, (err, result) => {
         res.json( handleRes(result));
@@ -375,6 +376,7 @@ module.exports = {
   },
   // Website
   getWebsiteAll(req, res, next) {
+    var tag = req.query.tag;
     pool.getConnection((err, connection) => {
       connection.query(sqlMap.website.queryAll, (err, result) => {
         res.json( handleRes(result));
