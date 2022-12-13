@@ -394,7 +394,7 @@ module.exports = {
           res.json(result);
         })
       } else {
-        connection.query(sqlMap.website.queryAll, [ start, end], (err, result) => {
+        connection.query(sqlMap.website.queryAll1, [ start, end], (err, result) => {
           res.json(result);
         })
       }

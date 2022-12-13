@@ -2,7 +2,7 @@
  * @Author: luting 18851908011@qq.com
  * @Date: 2022-11-23 14:56:09
  * @LastEditors: luting 18851908011@qq.com
- * @LastEditTime: 2022-12-13 17:01:03
+ * @LastEditTime: 2022-12-13 18:00:12
  * @FilePath: \myblog-master\server\sqlMap.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -69,7 +69,8 @@ var sqlMap = {
     queryAll: 'SELECT * FROM webs ORDER BY id desc',
   },
   website: {
-    queryAll: 'SELECT SQL_CALC_FOUND_ROWS * from websites   order by id desc limit ?, ?;SELECT FOUND_ROWS() as count',
+    queryAll: 'SELECT * FROM websites ORDER BY id desc',
+    queryAll1: 'SELECT SQL_CALC_FOUND_ROWS * from  websites  order by id desc limit ?, ?;SELECT FOUND_ROWS() as count',
     queryAllBysu: 'SELECT SQL_CALC_FOUND_ROWS * from websites WHERE  name like ? order by id desc limit ?, ?;SELECT FOUND_ROWS() as count',
     queryAllBySU: 'SELECT * from websites WHERE  name like?',
     insert: 'INSERT INTO websites(name, href, tag) VALUES (?,?,?)',

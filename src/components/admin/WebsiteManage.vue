@@ -2,7 +2,7 @@
  * @Author: luting 18851908011@qq.com
  * @Date: 2022-12-13 09:07:37
  * @LastEditors: luting 18851908011@qq.com
- * @LastEditTime: 2022-12-13 17:47:31
+ * @LastEditTime: 2022-12-13 17:56:43
  * @FilePath: \pphhzManage\src\components\admin\WebsiteManage.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -73,6 +73,7 @@ export default {
     },
     created() {
         this.getUserListAll()
+        this.getUserList()
     },
     methods: {
         getUserList() {
@@ -92,22 +93,18 @@ export default {
         },
         getUserListAll() {
             this.axios
-                .get("/api/admin/getWebsite", {
-                    params: { name: this.query.name, pageNum: this.query.current, pageSize: 1000 }
+                .get("/api/getWebsiteAll", {
                 })
-                .then(res => { 
-                    this.userList = res.data[0];
-                    this.total = res.data[1][0].count
-                    if(res.data[0].length>0){
-                        res.data[0].forEach(element => {debugger
-                            if(Object.keys(this.tagOption).indexOf(element.tag)==-1){
-                                console.log(Object.keys(this.tagOption))
-                                this.tagOption[element.tag] = element.tag
-                                console.log( this.tagOption)
+                .then(res => { debugger
+                    if(res.data.length>0){
+                        res.data.forEach(element => {
+                            // if(Object.keys(this.tagOption).indexOf(element.tag)==-1){
+                                // console.log(Object.keys(this.tagOption))
+                                this.tagOption[element.title] = element.title
+                                // console.log( this.tagOption)
 
-                            }
+                            // }
                         });
-                        debugger
                     } 
                 })
                 .catch(error => {
