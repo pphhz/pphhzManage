@@ -135,15 +135,7 @@ module.exports = {
         connection.release();
       })
     })
-  },
-  // getTag(req, res, next) {
-  //   pool.getConnection((err, connection) => {
-  //     connection.query(sqlMap.tag.queryById, (err, result) => {
-  //       res.json(result);
-  //       connection.release();
-  //     })
-  //   })
-  // },
+  }, 
   delTag(req, res, next) {
     pool.getConnection((err, connection) => {
       let postData = req.body;
@@ -380,6 +372,105 @@ module.exports = {
     pool.getConnection((err, connection) => {
       connection.query(sqlMap.website.queryAll, (err, result) => {
         res.json( handleRes(result));
+        connection.release();
+      })
+    })
+  },
+
+
+  // 增删改查website
+  getWebsite(req, res, next) {
+    pool.getConnection((err, connection) => {
+      let postData = req.query;//get请求参数在query里
+      let pageNum = parseInt(postData.pageNum || 1);// 页码
+      let end = parseInt(postData.pageSize || 5); // 默认页数
+      let start = (pageNum - 1) * end;
+      if (postData.name !== '' && postData.name !== undefined && postData.pageNum !== undefined) {
+        connection.query(sqlMap.website.queryAllBysu, ["%" + postData.name.trim() + "%", start, end], (err, result) => {
+          res.json(result);
+        })
+      } else if (postData.pageNum == undefined) {
+        connection.query(sqlMap.website.queryAllBySU, ["%" + postData.name.trim() + "%"], (err, result) => {
+          res.json(result);
+        })
+      } else {
+        connection.query(sqlMap.website.queryAll, [ start, end], (err, result) => {
+          res.json(result);
+        })
+      }
+      connection.release();
+    })
+  },
+  // 新增website
+  addWebsite(req, res, next) {
+    pool.getConnection((err, connection) => {
+      let postData = req.body,
+        creat_at = new Date(),
+        name = postData.name;
+      connection.query(sqlMap.website.queryByTitle, [name], (err, result) => {
+        if (result.length > 0) {
+          res.json({
+            status: false,
+            msg: '网站名已存在',
+          });
+          connection.release();
+        } else {  
+          connection.query(sqlMap.website.insert, [postData.name, postData.href, postData.tag], (err, result) => {
+            // connection.query(sqlMap.website.insert, [postData.username, title, postData.content, postData.html, postData.tag, creat_at, 0, 0, postData.state], (err, result) => {
+            if (err !== null) {
+              res.json({
+                status: false,
+                msg: '添加失败,' + err.sqlMessage,
+              });
+            } else {
+              res.json({
+                status: true,
+                msg: '添加成功',
+              });
+            }
+            connection.release();
+          })
+        }
+      })
+    })
+  },
+   //编辑website
+   updateWebsite(req, res, next) {
+    pool.getConnection((err, connection) => {
+      let postData = req.body;
+      connection.query(sqlMap.website.updAllById, [postData.name, postData.tag, postData.href, postData.id], (err, result) => {
+        if (err !== null) {
+          res.json({
+            status: false,
+            msg: '编辑失败',
+          });
+        } else {
+          res.json({
+            status: true,
+            msg: '编辑成功',
+          });
+        }
+        connection.release();
+      })
+    })
+  },
+  delWebsite(req, res, next) {
+    pool.getConnection((err, connection) => {
+        let postData = req.body;
+       console.log(postData.id);
+      // in () 这个只能⽤在数字，不能传字符串
+      connection.query(sqlMap.website.delById, [postData.id], (err, result) => {
+        if (err !== null) {
+          res.json({
+            status: false,
+            msg: '删除失败',
+          });
+        } else {
+          res.json({
+            status: true,
+            msg: '删除成功',
+          });
+        }
         connection.release();
       })
     })

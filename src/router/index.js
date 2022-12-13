@@ -81,6 +81,14 @@ export default new Router({
           component: resolve => require(['@/components/admin/DraftContent'], resolve)
         },
         {
+          path: 'websiteManage',
+          name: 'websiteManage',
+          meta: {
+            requireAuth: true,  
+          },
+          component: resolve => require(['@/components/admin/WebsiteManage'], resolve)
+        },
+        {
           path: 'update',
           name: 'update',
           meta: {

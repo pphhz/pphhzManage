@@ -80,7 +80,18 @@ router.post('/admin/updateArticle',(req,res,next)=>{
 router.post('/admin/updArticle',(req,res,next)=>{
   api.updArticle(req,res,next);
 })
-
+router.get('/admin/getWebsite',(req,res,next)=>{
+  api.getWebsite(req,res,next);
+})
+router.post('/admin/updateWebsite',(req,res,next)=>{
+  api.updateWebsite(req,res,next);
+})
+router.post('/admin/delWebsite',(req,res,next)=>{
+  api.delWebsite(req,res,next);
+})
+router.post('/admin/addWebsite',(req,res,next)=>{
+  api.addWebsite(req,res,next);
+})
 router.post('/admin/delArticle',(req,res,next)=>{
   api.delArticle(req,res,next);
 })
