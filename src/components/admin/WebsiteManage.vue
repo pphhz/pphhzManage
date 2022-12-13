@@ -2,7 +2,7 @@
  * @Author: luting 18851908011@qq.com
  * @Date: 2022-12-13 09:07:37
  * @LastEditors: luting 18851908011@qq.com
- * @LastEditTime: 2022-12-13 17:44:06
+ * @LastEditTime: 2022-12-13 17:47:31
  * @FilePath: \pphhzManage\src\components\admin\WebsiteManage.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -23,7 +23,7 @@
 
                 <el-table @selection-change="handleSelectionChange" :data="userList" border stripe ref="userTable"
                     style="width: 100%;margin-top: 20px;">
-                    <el-table-column type="selection" width="55">
+                    <el-table-column align="center" type="selection" width="55">
                     </el-table-column>
                     <el-table-column prop="name" label="网站名" align="center">
                     </el-table-column>
