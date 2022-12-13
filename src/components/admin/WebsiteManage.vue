@@ -31,7 +31,7 @@
                     </el-table-column>
                     <el-table-column prop="tag" label="标签" align="center">
                     </el-table-column>  
-                   <el-table-column align="right">
+                   <el-table-column align="center" label="操作" >
         <!-- <template slot="header" slot-scope="scope">
           <el-input v-model="search" size="mini" placeholder="输入关键字搜索"/>
         </template>-->
