@@ -2,7 +2,7 @@
  * @Author: luting 18851908011@qq.com
  * @Date: 2022-11-23 14:56:09
  * @LastEditors: luting 18851908011@qq.com
- * @LastEditTime: 2022-11-24 15:34:04
+ * @LastEditTime: 2022-12-14 15:28:35
  * @FilePath: \myblog-master\src\components\pages\Header.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -13,14 +13,14 @@
         <router-link to="/">StarBlog</router-link>
       </h1>
       <nav class="header-nav">
-        <el-input style="width:300px"
+        <!-- <el-input style="width:300px"
           placeholder="请输入搜索内容"
           prefix-icon="el-icon-search"
           v-model="search"
           class="nav-search"
           autocomplete="off"
           name="aa"
-        ></el-input>
+        ></el-input> -->
         <!-- <div class="nav-search">
           <i class="wmui icon-search"></i>
           <input type="text" maxlength="30" value>

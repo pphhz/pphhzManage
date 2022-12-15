@@ -356,12 +356,206 @@ module.exports = {
       })
     })
   },
+
+  // 增删改查pic
+  getPic(req, res, next) {
+    pool.getConnection((err, connection) => {
+      let postData = req.query;//get请求参数在query里
+      let pageNum = parseInt(postData.pageNum || 1);// 页码
+      let end = parseInt(postData.pageSize || 5); // 默认页数
+      let start = (pageNum - 1) * end;
+      if (postData.alt !== '' && postData.alt !== undefined && postData.pageNum !== undefined) {
+        connection.query(sqlMap.pic.queryAllBysu, ["%" + postData.alt.trim() + "%", start, end], (err, result) => {
+          res.json(result);
+        })
+      } else if (postData.pageNum == undefined) {
+        connection.query(sqlMap.pic.queryAllBySU, ["%" + postData.alt.trim() + "%"], (err, result) => {
+          res.json(result);
+        })
+      } else {
+        connection.query(sqlMap.pic.queryAll1, [ start, end], (err, result) => {
+          res.json(result);
+        })
+      }
+      connection.release();
+    })
+  },
+  // 新增pic
+  addPic(req, res, next) {
+    pool.getConnection((err, connection) => {
+      let postData = req.body,
+        creat_at = new Date(),
+        alt = postData.alt;
+      connection.query(sqlMap.pic.queryByTitle, [alt], (err, result) => {
+        if (result.length > 0) {
+          res.json({
+            status: false,
+            msg: '绘画标题已存在',
+          });
+          connection.release();
+        } else {  
+          connection.query(sqlMap.pic.insert, [postData.alt, postData.src, postData.time], (err, result) => {
+            if (err !== null) {
+              res.json({
+                status: false,
+                msg: '添加失败,' + err.sqlMessage,
+              });
+            } else {
+              res.json({
+                status: true,
+                msg: '添加成功',
+              });
+            }
+            connection.release();
+          })
+        }
+      })
+    })
+  },
+   //编辑pic
+   updatePic(req, res, next) {
+    pool.getConnection((err, connection) => {
+      let postData = req.body;
+      connection.query(sqlMap.pic.updAllById, [postData.alt, postData.time, postData.src, postData.id], (err, result) => {
+        if (err !== null) {
+          res.json({
+            status: false,
+            msg: '编辑失败',
+          });
+        } else {
+          res.json({
+            status: true,
+            msg: '编辑成功',
+          });
+        }
+        connection.release();
+      })
+    })
+  },
+  delPic(req, res, next) {
+    pool.getConnection((err, connection) => {
+        let postData = req.body;
+       console.log(postData.id);
+      // in () 这个只能⽤在数字，不能传字符串
+      connection.query(sqlMap.pic.delById, [postData.id], (err, result) => {
+        if (err !== null) {
+          res.json({
+            status: false,
+            msg: '删除失败',
+          });
+        } else {
+          res.json({
+            status: true,
+            msg: '删除成功',
+          });
+        }
+        connection.release();
+      })
+    })
+  },
   // web
-  getWebsAll(req, res, next) {
+  getWebAll(req, res, next) {
     var tag = req.query.tag;
     pool.getConnection((err, connection) => {
       connection.query(sqlMap.web.queryAll, (err, result) => {
         res.json( handleRes(result));
+        connection.release();
+      })
+    })
+  },
+  // 增删改查web
+  getWeb(req, res, next) {
+    pool.getConnection((err, connection) => {
+      let postData = req.query;//get请求参数在query里
+      let pageNum = parseInt(postData.pageNum || 1);// 页码
+      let end = parseInt(postData.pageSize || 5); // 默认页数
+      let start = (pageNum - 1) * end;
+      if (postData.name !== '' && postData.name !== undefined && postData.pageNum !== undefined) {
+        connection.query(sqlMap.web.queryAllBysu, ["%" + postData.name.trim() + "%", start, end], (err, result) => {
+          res.json(result);
+        })
+      } else if (postData.pageNum == undefined) {
+        connection.query(sqlMap.web.queryAllBySU, ["%" + postData.name.trim() + "%"], (err, result) => {
+          res.json(result);
+        })
+      } else {
+        connection.query(sqlMap.web.queryAll1, [ start, end], (err, result) => {
+          res.json(result);
+        })
+      }
+      connection.release();
+    })
+  },
+  // 新增web
+  addWeb(req, res, next) {
+    pool.getConnection((err, connection) => {
+      let postData = req.body,
+        creat_at = new Date(),
+        name = postData.name;
+      connection.query(sqlMap.web.queryByTitle, [name], (err, result) => {
+        if (result.length > 0) {
+          res.json({
+            status: false,
+            msg: '网站名已存在',
+          });
+          connection.release();
+        } else {  
+          connection.query(sqlMap.web.insert, [postData.name, postData.href, postData.tag], (err, result) => {
+            // connection.query(sqlMap.web.insert, [postData.username, title, postData.content, postData.html, postData.tag, creat_at, 0, 0, postData.state], (err, result) => {
+            if (err !== null) {
+              res.json({
+                status: false,
+                msg: '添加失败,' + err.sqlMessage,
+              });
+            } else {
+              res.json({
+                status: true,
+                msg: '添加成功',
+              });
+            }
+            connection.release();
+          })
+        }
+      })
+    })
+  },
+   //编辑web
+   updateWeb(req, res, next) {
+    pool.getConnection((err, connection) => {
+      let postData = req.body;
+      connection.query(sqlMap.web.updAllById, [postData.name, postData.tag, postData.href, postData.id], (err, result) => {
+        if (err !== null) {
+          res.json({
+            status: false,
+            msg: '编辑失败',
+          });
+        } else {
+          res.json({
+            status: true,
+            msg: '编辑成功',
+          });
+        }
+        connection.release();
+      })
+    })
+  },
+  delWeb(req, res, next) {
+    pool.getConnection((err, connection) => {
+        let postData = req.body;
+       console.log(postData.id);
+      // in () 这个只能⽤在数字，不能传字符串
+      connection.query(sqlMap.web.delById, [postData.id], (err, result) => {
+        if (err !== null) {
+          res.json({
+            status: false,
+            msg: '删除失败',
+          });
+        } else {
+          res.json({
+            status: true,
+            msg: '删除成功',
+          });
+        }
         connection.release();
       })
     })

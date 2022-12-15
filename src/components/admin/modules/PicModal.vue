@@ -2,26 +2,23 @@
  * @Author: luting 18851908011@qq.com
  * @Date: 2022-12-13 09:15:45
  * @LastEditors: luting 18851908011@qq.com
- * @LastEditTime: 2022-12-13 17:45:28
+ * @LastEditTime: 2022-12-15 16:34:41
  * @FilePath: \pphhzManage\src\components\admin\modules\WebsiteModal.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
 
     <!--新增弹窗-->
-    <el-dialog center title="新增" :visible.sync="visible" width="30%">
+    <el-dialog center :title="title" :visible.sync="visible" width="30%">
         <el-form :model="model" :rules="addRules" ref="addRuleForm" label-width="90px">
-            <el-form-item label="网站名" prop="name">
-                <el-input v-model="model.name"></el-input>
+            <el-form-item label="绘画标题" prop="alt">
+                <el-input v-model="model.alt"></el-input>
             </el-form-item>
-            <el-form-item label="url" prop="href">
-                <el-input v-model="model.href"></el-input>
+            <el-form-item label="URL" prop="src">
+                <el-input v-model="model.src"></el-input>
             </el-form-item>
-            <el-form-item label="标签" prop="tag">
-                <el-select v-model="model.tag"  :popper-append-to-body="false" placeholder="请选择标签"
-                    style="width:100%">
-                    <el-option v-for="item in tagOption" :key="item" :label="item" :value="item"></el-option>
-                </el-select> 
+            <el-form-item label="绘画时间" prop="time">
+                <el-input v-model="model.time"></el-input>
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -33,53 +30,57 @@
 
 <script>
 export default {
-    name: "WebsiteManage",
+    name: "PicModal",
     data() {
         return {
+            title: '',
             visible: false,
             options: [],
             model: {
-                name: '',
-                href: '',
-                tag: '',
+                alt: '',
+                src: '',
+                time: '',
             },
             addRules: {
-                name: [
-                    { required: true, message: '请输入网站名', trigger: 'blur' },
+                alt: [
+                    { required: true, message: '请输入绘画标题', trigger: 'blur' },
                     { min: 1, max: 12, message: '长度在 1 到 12 个字符', trigger: 'blur' }
                 ],
-                href: [
+                src: [
                     { required: true, message: '请输入正确的url', trigger: 'blur', pattern: /^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*$/i },
                 ],
-                tag: [
-                    { required: true, message: '请选择标签', trigger: 'blur' },
+                time: [
+                    { required: true, message: '请输入绘画时间', trigger: 'blur' },
                 ],
 
             }
         }
     },
     props: {
-        tagOption: {
-            required: true,
-            type: Object
-        }
+        name:{
+        type:String,
+        required:true,
+        default:''
+   }
     },
     created() {
     },
     methods: {
         // 
         add() {
+            this.title="新增" 
             this.visible = true
             this.model = {
-                name: '',
-                tag: '',
-                href: ''
+                alt: '',
+                src: '',
+                time: '',
             }
             this.$nextTick(() => {
                 this.$refs.addRuleForm.resetFields();
             })
         },
         edit(record) {
+            this.title="编辑" 
             this.visible = true
             this.model = Object.assign({}, record)
         },
@@ -91,12 +92,11 @@ export default {
             // 判断是否通过校验
             this.$refs['addRuleForm'].validate((valid) => {
                 if (valid) {
-                    const headers = { "content-type": "application/json;charset=UTF-8" };
                     let url = ''
                     if (this.model.id) {
-                        url = '/api/admin/updateWebsite'
+                        url = '/api/admin/update'+  this.name
                     } else {
-                        url = '/api/admin/addWebsite'
+                        url = '/api/admin/add'+  this.name
                     }
                     this.axios.post(url,
                         this.model

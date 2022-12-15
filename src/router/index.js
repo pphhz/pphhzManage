@@ -80,6 +80,7 @@ export default new Router({
           },
           component: resolve => require(['@/components/admin/DraftContent'], resolve)
         },
+     
         {
           path: 'websiteManage',
           name: 'websiteManage',
@@ -87,6 +88,23 @@ export default new Router({
             requireAuth: true,  
           },
           component: resolve => require(['@/components/admin/WebsiteManage'], resolve)
+        },
+     
+        {
+          path: 'picManage',
+          name: 'picManage',
+          meta: {
+            requireAuth: true,  
+          },
+          component: resolve => require(['@/components/admin/PicManage'], resolve)
+        },
+        {
+          path: 'webManage',
+          name: 'webManage',
+          meta: {
+            requireAuth: true,  
+          },
+          component: resolve => require(['@/components/admin/WebManage'], resolve)
         },
         {
           path: 'update',

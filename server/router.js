@@ -92,6 +92,30 @@ router.post('/admin/delWebsite',(req,res,next)=>{
 router.post('/admin/addWebsite',(req,res,next)=>{
   api.addWebsite(req,res,next);
 })
+router.get('/admin/getWeb',(req,res,next)=>{
+  api.getWeb(req,res,next);
+})
+router.post('/admin/updateWeb',(req,res,next)=>{
+  api.updateWeb(req,res,next);
+})
+router.post('/admin/delWeb',(req,res,next)=>{
+  api.delWeb(req,res,next);
+})
+router.post('/admin/addWeb',(req,res,next)=>{
+  api.addWeb(req,res,next);
+})
+router.get('/admin/getPic',(req,res,next)=>{
+  api.getPic(req,res,next);
+})
+router.post('/admin/updatePic',(req,res,next)=>{
+  api.updatePic(req,res,next);
+})
+router.post('/admin/delPic',(req,res,next)=>{
+  api.delPic(req,res,next);
+})
+router.post('/admin/addPic',(req,res,next)=>{
+  api.addPic(req,res,next);
+})
 router.post('/admin/delArticle',(req,res,next)=>{
   api.delArticle(req,res,next);
 })
@@ -116,8 +140,8 @@ router.get('/getPicAll',(req,res,next)=>{
   api.getPicAll(req,res,next);
 })
 
-router.get('/getWebsAll',(req,res,next)=>{
-  api.getWebsAll(req,res,next);
+router.get('/getWebAll',(req,res,next)=>{
+  api.getWebAll(req,res,next);
 })
 
 router.get('/getWebsiteAll',(req,res,next)=>{

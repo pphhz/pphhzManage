@@ -2,7 +2,7 @@
  * @Author: luting 18851908011@qq.com
  * @Date: 2022-11-23 14:56:09
  * @LastEditors: luting 18851908011@qq.com
- * @LastEditTime: 2022-12-13 18:00:12
+ * @LastEditTime: 2022-12-15 16:29:44
  * @FilePath: \myblog-master\server\sqlMap.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -64,9 +64,25 @@ var sqlMap = {
   },
   pic: {
     queryAll: 'SELECT * FROM pics ORDER BY id desc',
+    queryAll1: 'SELECT SQL_CALC_FOUND_ROWS * from  pics  order by id desc limit ?, ?;SELECT FOUND_ROWS() as count',
+    queryAllBysu: 'SELECT SQL_CALC_FOUND_ROWS * from pics WHERE  alt like ? order by id desc limit ?, ?;SELECT FOUND_ROWS() as count',
+    queryAllBySU: 'SELECT * from pics WHERE  alt like?',
+    insert: 'INSERT INTO pics(alt, src, time) VALUES (?,?,?)',
+    updAllById: 'UPDATE pics SET  alt=? ,time=? ,src=? WHERE id = ?',
+    // delById: 'DELETE FROM web WHERE id in ?',
+    delById: 'DELETE FROM pics WHERE id in  (?)',
+    queryByTitle: 'SELECT * FROM pics WHERE alt = ?',
   },
   web: {
-    queryAll: 'SELECT * FROM webs ORDER BY id desc',
+    queryAll: 'SELECT * FROM webs ORDER BY id desc', 
+    queryAll1: 'SELECT SQL_CALC_FOUND_ROWS * from  webs  order by id desc limit ?, ?;SELECT FOUND_ROWS() as count',
+    queryAllBysu: 'SELECT SQL_CALC_FOUND_ROWS * from webs WHERE  name like ? order by id desc limit ?, ?;SELECT FOUND_ROWS() as count',
+    queryAllBySU: 'SELECT * from webs WHERE  name like?',
+    insert: 'INSERT INTO webs(name, href, tag) VALUES (?,?,?)',
+    updAllById: 'UPDATE webs SET  name=? ,tag=? ,href=? WHERE id = ?',
+    // delById: 'DELETE FROM web WHERE id in ?',
+    delById: 'DELETE FROM webs WHERE id in  (?)',
+    queryByTitle: 'SELECT * FROM webs WHERE name = ?',
   },
   website: {
     queryAll: 'SELECT * FROM websites ORDER BY id desc',
