@@ -12,30 +12,30 @@ const pool = mysql.createPool({
   port: dbConfig.mysql.port,
   multipleStatements: true    // 多语句查询
 });
-const  handleRes =(result)  =>{
+const handleRes = (result) => {
   let res0 = []
   let tag = []
-  result.forEach(element  => {
+  result.forEach(element => {
     if (tag.indexOf(element.tag) == -1) {
       tag.push(element.tag)
       res0.push({
-          title: element.tag,
-          children: [
-            {
-              href: element.href,
-              name: element.name,
-            },
-          ],
-        })
-      } else {
-        let index0 = tag.indexOf(element.tag) 
-        res0[index0].children.push({
-              href: element.href,
-              name: element.name,
-        })
-      }
-    }); 
-    return res0
+        title: element.tag,
+        children: [
+          {
+            href: element.href,
+            name: element.name,
+          },
+        ],
+      })
+    } else {
+      let index0 = tag.indexOf(element.tag)
+      res0[index0].children.push({
+        href: element.href,
+        name: element.name,
+      })
+    }
+  });
+  return res0
 }
 
 
@@ -118,7 +118,8 @@ module.exports = {
             res.json({
               status: true,
               msg: '登录成功',
-              token: token
+              token: token,
+              role: result[0].role,
             });
 
           }
@@ -135,7 +136,7 @@ module.exports = {
         connection.release();
       })
     })
-  }, 
+  },
   delTag(req, res, next) {
     pool.getConnection((err, connection) => {
       let postData = req.body;
@@ -189,11 +190,33 @@ module.exports = {
       })
     })
   },
+  getArticleByTag(req, res, next) {
+    let postData = req.query;
+    pool.getConnection((err, connection) => {
+      let arr = []
+      arr.push(postData.tag)
+      connection.query(sqlMap.article.queryByTag, [JSON.stringify(arr)], (err, result) => {
+        res.json(result);
+        connection.release();
+      })
+    })
+  },
+  getArticleByTagPerson(req, res, next) {
+    let postData = req.query;
+    pool.getConnection((err, connection) => {
+      let arr = []
+      arr.push(postData.tag)
+      connection.query(sqlMap.article.queryByTag, [JSON.stringify(arr),postData.username], (err, result) => {
+        res.json(result);
+        connection.release();
+      })
+    })
+  },
   // 上传图片
   uploadPic(req, res, next) {
     let file = req.file,
-      url = '/api/upload/' + file.filename;  
-      // 'http://' + req.headers.host + 
+      url = '/api/upload/' + file.filename;
+    // 'http://' + req.headers.host + 
     res.send({ resultCode: '1', url });
   },
   // 读取图片
@@ -213,7 +236,7 @@ module.exports = {
             msg: '文章标题已存在',
           });
           connection.release();
-        } else {  
+        } else {
           connection.query(sqlMap.article.insert, [postData.username, title, postData.content, postData.html, postData.tags, creat_at, 0, 0, postData.state], (err, result) => {
             if (err !== null) {
               res.json({
@@ -239,13 +262,31 @@ module.exports = {
       let pageNum = parseInt(postData.pageNum || 1);// 页码
       let end = parseInt(postData.pageSize || 5); // 默认页数
       let start = (pageNum - 1) * end;
-      if (postData.username !== undefined && postData.pageNum !== undefined) {
-   
-        connection.query(sqlMap.article.queryAllBysu, [postData.state, postData.username, start, end], (err, result) => {
-          res.json(result);
-        })
+      let type = '["' + (postData.type)  +'"]'
+      if (postData.username !== undefined && postData.pageNum !== undefined && postData.name !== undefined  ) {
+        if (postData.name !==  '' && postData.type === '') {
+          connection.query(sqlMap.article.queryAllBysuName, [postData.state, postData.username,"%" + postData.name.trim() + "%", start, end], (err, result) => {
+            res.json(result);
+          })
+        }
+        if (postData.name ===  '' && postData.type ===  '') {
+          connection.query(sqlMap.article.queryAllBysu, [postData.state, postData.username, start, end], (err, result) => {
+            res.json(result);
+          })
+        }
+        if (postData.name ===  '' && postData.type !==  '') {
+          connection.query(sqlMap.article.queryAllBysuType, [postData.state, postData.username,  type, start, end], (err, result) => {
+            res.json(result);
+          })
+        }
+        if (postData.name !==  '' && postData.type !==  '') {
+          connection.query(sqlMap.article.queryAllBysuNameType, [postData.state, postData.username, "%" + postData.name.trim() + "%",  type, start, end], (err, result) => {
+            res.json(result);
+          })
+        }
+
       } else if (postData.pageNum == undefined) {
-        connection.query(sqlMap.article.queryAllBySU, [postData.state, postData.username], (err, result) => {
+        connection.query(sqlMap.article.queryAllBySU, [postData.state, postData.username, "%" + postData.name.trim() + "%", postData.type], (err, result) => {
           res.json(result);
         })
       } else {
@@ -262,9 +303,9 @@ module.exports = {
       let postData = req.body;
       connection.query(sqlMap.article.updateViewCount, [postData.view, postData.count, postData.id], (err, result) => {
         res.send('ok');
+        connection.release()
       })
     })
-    connection.release()
   },
   //改变文章状态
   updateArticle(req, res, next) {
@@ -373,7 +414,7 @@ module.exports = {
           res.json(result);
         })
       } else {
-        connection.query(sqlMap.pic.queryAll1, [ start, end], (err, result) => {
+        connection.query(sqlMap.pic.queryAll1, [start, end], (err, result) => {
           res.json(result);
         })
       }
@@ -393,7 +434,7 @@ module.exports = {
             msg: '绘画标题已存在',
           });
           connection.release();
-        } else {  
+        } else {
           connection.query(sqlMap.pic.insert, [postData.alt, postData.src, postData.time], (err, result) => {
             if (err !== null) {
               res.json({
@@ -412,8 +453,8 @@ module.exports = {
       })
     })
   },
-   //编辑pic
-   updatePic(req, res, next) {
+  //编辑pic
+  updatePic(req, res, next) {
     pool.getConnection((err, connection) => {
       let postData = req.body;
       connection.query(sqlMap.pic.updAllById, [postData.alt, postData.time, postData.src, postData.id], (err, result) => {
@@ -434,8 +475,8 @@ module.exports = {
   },
   delPic(req, res, next) {
     pool.getConnection((err, connection) => {
-        let postData = req.body;
-       console.log(postData.id);
+      let postData = req.body;
+      console.log(postData.id);
       // in () 这个只能⽤在数字，不能传字符串
       connection.query(sqlMap.pic.delById, [postData.id], (err, result) => {
         if (err !== null) {
@@ -458,7 +499,7 @@ module.exports = {
     var tag = req.query.tag;
     pool.getConnection((err, connection) => {
       connection.query(sqlMap.web.queryAll, (err, result) => {
-        res.json( handleRes(result));
+        res.json(handleRes(result));
         connection.release();
       })
     })
@@ -479,7 +520,7 @@ module.exports = {
           res.json(result);
         })
       } else {
-        connection.query(sqlMap.web.queryAll1, [ start, end], (err, result) => {
+        connection.query(sqlMap.web.queryAll1, [start, end], (err, result) => {
           res.json(result);
         })
       }
@@ -499,7 +540,7 @@ module.exports = {
             msg: '网站名已存在',
           });
           connection.release();
-        } else {  
+        } else {
           connection.query(sqlMap.web.insert, [postData.name, postData.href, postData.tag], (err, result) => {
             // connection.query(sqlMap.web.insert, [postData.username, title, postData.content, postData.html, postData.tag, creat_at, 0, 0, postData.state], (err, result) => {
             if (err !== null) {
@@ -519,8 +560,8 @@ module.exports = {
       })
     })
   },
-   //编辑web
-   updateWeb(req, res, next) {
+  //编辑web
+  updateWeb(req, res, next) {
     pool.getConnection((err, connection) => {
       let postData = req.body;
       connection.query(sqlMap.web.updAllById, [postData.name, postData.tag, postData.href, postData.id], (err, result) => {
@@ -541,8 +582,8 @@ module.exports = {
   },
   delWeb(req, res, next) {
     pool.getConnection((err, connection) => {
-        let postData = req.body;
-       console.log(postData.id);
+      let postData = req.body;
+      console.log(postData.id);
       // in () 这个只能⽤在数字，不能传字符串
       connection.query(sqlMap.web.delById, [postData.id], (err, result) => {
         if (err !== null) {
@@ -565,7 +606,7 @@ module.exports = {
     var tag = req.query.tag;
     pool.getConnection((err, connection) => {
       connection.query(sqlMap.website.queryAll, (err, result) => {
-        res.json( handleRes(result));
+        res.json(handleRes(result));
         connection.release();
       })
     })
@@ -588,7 +629,7 @@ module.exports = {
           res.json(result);
         })
       } else {
-        connection.query(sqlMap.website.queryAll1, [ start, end], (err, result) => {
+        connection.query(sqlMap.website.queryAll1, [start, end], (err, result) => {
           res.json(result);
         })
       }
@@ -608,7 +649,7 @@ module.exports = {
             msg: '网站名已存在',
           });
           connection.release();
-        } else {  
+        } else {
           connection.query(sqlMap.website.insert, [postData.name, postData.href, postData.tag], (err, result) => {
             // connection.query(sqlMap.website.insert, [postData.username, title, postData.content, postData.html, postData.tag, creat_at, 0, 0, postData.state], (err, result) => {
             if (err !== null) {
@@ -628,8 +669,8 @@ module.exports = {
       })
     })
   },
-   //编辑website
-   updateWebsite(req, res, next) {
+  //编辑website
+  updateWebsite(req, res, next) {
     pool.getConnection((err, connection) => {
       let postData = req.body;
       connection.query(sqlMap.website.updAllById, [postData.name, postData.tag, postData.href, postData.id], (err, result) => {
@@ -650,8 +691,8 @@ module.exports = {
   },
   delWebsite(req, res, next) {
     pool.getConnection((err, connection) => {
-        let postData = req.body;
-       console.log(postData.id);
+      let postData = req.body;
+      console.log(postData.id);
       // in () 这个只能⽤在数字，不能传字符串
       connection.query(sqlMap.website.delById, [postData.id], (err, result) => {
         if (err !== null) {

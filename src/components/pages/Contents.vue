@@ -127,19 +127,19 @@ export default {
       .replace(/\"/g, "");
     this.tags = str.split(",");
     this.commentList = JSON.parse(this.article.comments) || [];
-    // this.axios
-    //   .post("/api/updateCount", {
-    //     view: this.article.view + 1,
-    //     count: this.commentList.length,
-    //     id: this.article.id
-    //   })
-    //   .then(response => {
-    //     // console.log(response)
-    //   })
-    //   .catch(error => {
-    //     this.$message.error("服务器错误");
-    //     console.log(error);
-    //   });
+    this.axios
+      .post("/api/updateCount", {
+        view: this.article.view + 1,
+        count: this.commentList.length,
+        id: this.article.id
+      })
+      .then(response => {
+        // console.log(response)
+      })
+      .catch(error => {
+        this.$message.error("服务器错误");
+        console.log(error);
+      });
   }
 };
 </script>

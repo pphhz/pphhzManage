@@ -80,6 +80,12 @@ router.post('/admin/updateArticle',(req,res,next)=>{
 router.post('/admin/updArticle',(req,res,next)=>{
   api.updArticle(req,res,next);
 })
+router.get('/getArticleByTag',(req,res,next)=>{
+  api.getArticleByTag(req,res,next);
+})
+router.get('/getArticleByTagPerson',(req,res,next)=>{
+  api.getArticleByTagPerson(req,res,next);
+})
 router.get('/admin/getWebsite',(req,res,next)=>{
   api.getWebsite(req,res,next);
 })

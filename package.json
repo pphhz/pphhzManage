@@ -13,7 +13,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
-    "element-ui": "^2.6.1",
+    "element-ui": "^2.15.12",
     "express": "^4.16.4",
     "js-md5": "^0.7.3",
     "jsonwebtoken": "^8.5.1",

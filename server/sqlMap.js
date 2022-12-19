@@ -2,7 +2,7 @@
  * @Author: luting 18851908011@qq.com
  * @Date: 2022-11-23 14:56:09
  * @LastEditors: luting 18851908011@qq.com
- * @LastEditTime: 2022-12-15 16:29:44
+ * @LastEditTime: 2022-12-19 17:23:44
  * @FilePath: \myblog-master\server\sqlMap.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -14,12 +14,17 @@ var sqlMap = {
     updById: 'UPDATE articles SET state=? WHERE id = ?',
     updAllById: 'UPDATE articles SET state=?,title=?,type=?,summary=? WHERE id = ?',
     queryAll: 'SELECT SQL_CALC_FOUND_ROWS * from articles WHERE state =? order by post_time desc limit ?, ?;SELECT FOUND_ROWS() as count',
-    queryAllBysu: 'SELECT SQL_CALC_FOUND_ROWS * from articles WHERE state =? AND username =? order by post_time desc limit ?, ?;SELECT FOUND_ROWS() as count',
-    queryAllBySU: 'SELECT * from articles WHERE state =? AND username =?',
+    queryAllBysu: 'SELECT SQL_CALC_FOUND_ROWS * from articles WHERE state =? AND username =?   order by post_time desc limit ?, ?;SELECT FOUND_ROWS() as count',
+    queryAllBysuName: 'SELECT SQL_CALC_FOUND_ROWS * from articles WHERE state =? AND username =? AND  title like ?   order by post_time desc limit ?, ?;SELECT FOUND_ROWS() as count',
+    queryAllBysuType: 'SELECT SQL_CALC_FOUND_ROWS * from articles WHERE state =? AND username =?  AND type =? order by post_time desc limit ?, ?;SELECT FOUND_ROWS() as count',
+    queryAllBysuNameType: 'SELECT SQL_CALC_FOUND_ROWS * from articles WHERE state =? AND username =? AND  title like ? AND type =? order by post_time desc limit ?, ?;SELECT FOUND_ROWS() as count',
+    queryAllBySU: 'SELECT * from articles WHERE state =? AND username =? AND  name =? AND type =?',
     insertComment: 'UPDATE articles SET comments=? WHERE id=?',
     updateViewCount: 'UPDATE articles SET view=?,comment_count=? where id=?',
     insert: 'INSERT INTO articles(username, title,summary,shtml,type, post_time, view, comment_count,state) VALUES (?,?,?,?,?,?,?,?,?)',
     queryByTitle: 'SELECT * FROM articles WHERE title = ?',
+    queryByTag: 'SELECT * FROM articles WHERE type=?',
+    queryByTagPerson: 'SELECT * FROM articles WHERE type=?  AND username =?',
     queryByTagId: "SELECT " +
       "c.*, ( " +
       "SELECT " +

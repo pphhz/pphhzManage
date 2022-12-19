@@ -2,7 +2,7 @@
  * @Author: luting 18851908011@qq.com
  * @Date: 2022-12-13 09:07:37
  * @LastEditors: luting 18851908011@qq.com
- * @LastEditTime: 2022-12-15 16:53:44
+ * @LastEditTime: 2022-12-16 09:07:23
  * @FilePath: \pphhzManage\src\components\admin\WebsiteManage.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -55,11 +55,11 @@
         </el-col>
         <pic-modal :name="name" ref="picModal" @close="close"></pic-modal>
       <!-- 点击图片能放大查看 -->
-    <el-dialog  :title="'查看图片'" centered :width="1200" :destroyOnClose="true" :visible="visibleScaleBig"
-      :maskClosable="true" @cancel="visibleScaleBig=flase">
+    <el-dialog  :title="'查看图片'" centered  width="1200" :destroy-on-close="true" :visible="visibleScaleBig"
+      >
 
       <template slot="footer">
-        <el-button key="cancelScaleBig" @click="visibleScaleBig=flase">取消</el-button>
+        <el-button key="cancelScaleBig" @click="visibleScaleBig=false">取消</el-button>
       </template>
       <img  style="width:auto;margin:0 auto;display: block;height: 500px;" :src="choosedSrc" alt="">
     </el-dialog>
