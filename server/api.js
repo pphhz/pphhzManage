@@ -206,7 +206,7 @@ module.exports = {
     pool.getConnection((err, connection) => {
       let arr = []
       arr.push(postData.tag)
-      connection.query(sqlMap.article.queryByTag, [JSON.stringify(arr),postData.username], (err, result) => {
+      connection.query(sqlMap.article.queryByTagPerson, [JSON.stringify(arr),postData.username], (err, result) => {
         res.json(result);
         connection.release();
       })
