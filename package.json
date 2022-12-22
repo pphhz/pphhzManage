@@ -6,8 +6,9 @@
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "start": "npm run dev",
+    "start": "node ./server/index.js",
     "build": "node build/build.js",
+    "server": "npm run dev",
     "dist": "webpack --progress --profile --colors --config build/webpack.prod.conf.js"
   },
   "dependencies": {

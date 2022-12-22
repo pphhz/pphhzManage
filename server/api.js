@@ -331,7 +331,7 @@ module.exports = {
   updArticle(req, res, next) {
     pool.getConnection((err, connection) => {
       let postData = req.body;
-      connection.query(sqlMap.article.updAllById, [postData.state, postData.title, postData.tags, postData.content, postData.id], (err, result) => {
+      connection.query(sqlMap.article.updAllById, [postData.state, postData.title, postData.tags, postData.content, postData.html,  postData.id], (err, result) => {
         if (err !== null) {
           res.json({
             status: false,
