@@ -398,6 +398,27 @@ module.exports = {
     })
   },
 
+  // 点赞取消赞
+  updatePicLike(req, res, next) {
+    pool.getConnection((err, connection) => {
+      let postData = req.body;
+      console.log(postData)
+      connection.query(sqlMap.pic.updatePicLike, [postData.whoLike, postData.id], (err, result) => {
+        if (err !== null) {
+          res.json({
+            status: false,
+            msg: '编辑失败',
+          });
+        } else {
+          res.json({
+            status: true,
+            msg: '编辑成功',
+          });
+        }
+        connection.release();
+      })
+    })
+  },
   // 增删改查pic
   getPic(req, res, next) {
     pool.getConnection((err, connection) => {

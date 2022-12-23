@@ -74,6 +74,7 @@ var sqlMap = {
     queryAllBySU: 'SELECT * from pics WHERE  alt like ? ORDER BY id desc',
     insert: 'INSERT INTO pics(alt, src, time) VALUES (?,?,?)',
     updAllById: 'UPDATE pics SET  alt=? ,time=? ,src=? WHERE id = ?',
+    updatePicLike: 'UPDATE pics SET  who_like=? WHERE id = ?',
     // delById: 'DELETE FROM web WHERE id in ?',
     delById: 'DELETE FROM pics WHERE id in  (?)',
     queryByTitle: 'SELECT * FROM pics WHERE alt = ? ORDER BY id desc',

@@ -116,6 +116,9 @@ router.get('/admin/getPic',(req,res,next)=>{
 router.post('/admin/updatePic',(req,res,next)=>{
   api.updatePic(req,res,next);
 })
+router.post('/admin/updatePicLike',(req,res,next)=>{
+  api.updatePicLike(req,res,next);
+})
 router.post('/admin/delPic',(req,res,next)=>{
   api.delPic(req,res,next);
 })
