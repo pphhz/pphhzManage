@@ -402,7 +402,6 @@ module.exports = {
   updatePicLike(req, res, next) {
     pool.getConnection((err, connection) => {
       let postData = req.body;
-      console.log(postData)
       connection.query(sqlMap.pic.updatePicLike, [postData.whoLike, postData.id], (err, result) => {
         if (err !== null) {
           res.json({
