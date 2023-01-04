@@ -231,7 +231,7 @@ module.exports = {
         title = postData.title;
         username = postData.username;
      console.log(username)
-        connection.query(sqlMap.article.queryByTitle, [title],  [username], (err, result) => {
+        connection.query(sqlMap.article.queryByTitle, [title,username], (err, result) => {
         if (result.length > 0) {
           res.json({
             status: false,
