@@ -2,7 +2,7 @@
  * @Author: luting 18851908011@qq.com
  * @Date: 2022-11-23 14:56:09
  * @LastEditors: luting 18851908011@qq.com
- * @LastEditTime: 2022-12-22 21:41:46
+ * @LastEditTime: 2023-01-04 14:26:57
  * @FilePath: \myblog-master\server\sqlMap.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -22,7 +22,7 @@ var sqlMap = {
     insertComment: 'UPDATE articles SET comments=? WHERE id=?',
     updateViewCount: 'UPDATE articles SET view=?,comment_count=? where id=?',
     insert: 'INSERT INTO articles(username, title,summary,shtml,type, post_time, view, comment_count,state) VALUES (?,?,?,?,?,?,?,?,?)',
-    queryByTitle: 'SELECT * FROM articles WHERE title = ?  order by post_time desc ',
+    queryByTitle: 'SELECT * FROM articles WHERE title = ?  AND username =?  order by post_time desc ',
     queryByTag: 'SELECT * FROM articles WHERE type=?  order by post_time desc ',
     queryByTagPerson: 'SELECT * FROM articles WHERE type=?  AND username =?  order by post_time desc ',
     queryByTagId: "SELECT " +
